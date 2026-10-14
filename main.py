@@ -6,8 +6,8 @@ from aiogram import Bot, Dispatcher, types
 from aiogram.filters import CommandStart
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
-# Токен вашого бота
-TOKEN = "8909701110:AAHrmwTlzHXs9zfXMD3KbBfVO1_yuaurX94"
+# Токен вашего бота (укажи свой правильный токен!)
+TOKEN = "ВСТАВ_СВІЙ_ТОКЕН_СЮДИ"
 
 logging.basicConfig(level=logging.INFO)
 
@@ -22,8 +22,8 @@ async def handle(request):
 
 async def start_web_server():
     app = web.Application()
+    # add_get автоматически обрабатывает и GET, и HEAD
     app.router.add_get("/", handle)
-    app.router.add_head("/", handle)
     runner = web.AppRunner(app)
     await runner.setup()
     port = int(os.environ.get("PORT", 10000))
@@ -35,7 +35,6 @@ async def start_web_server():
 # --- КНОПКИ ТА ОБРОБНИК СТАРТУ ---
 @dp.message(CommandStart())
 async def cmd_start(message: types.Message):
-    # Початкова клавіатура
     keyboard = InlineKeyboardMarkup(
         inline_keyboard=[
             [
@@ -47,7 +46,7 @@ async def cmd_start(message: types.Message):
             [
                 InlineKeyboardButton(
                     text="👨‍💻 ЗВ'ЯЗОК З МЕНЕДЖЕРОМ",
-                    url="https://t.me/Mikhail34211"  # Заміни на юзернейм менеджера
+                    url="https://t.me/твій_тег_менеджера"  # Замени на ссылку менеджера
                 )
             ]
         ]
@@ -62,7 +61,7 @@ async def cmd_start(message: types.Message):
     await message.answer(text, reply_markup=keyboard)
 
 
-# Обробник для кнопки "ВІДКРИТИ КАТАЛОГ"
+# Обработчик для кнопки "ВІДКРИТИ КАТАЛОГ"
 @dp.callback_query(lambda c: c.data == "open_catalog")
 async def process_catalog(callback_query: types.CallbackQuery):
     catalog_keyboard = InlineKeyboardMarkup(
@@ -70,13 +69,13 @@ async def process_catalog(callback_query: types.CallbackQuery):
             [
                 InlineKeyboardButton(
                     text="ВЕРХНІЙ ОДЯГ ↗️",
-                    url="https://t.me/outerwear32"  # або callback_data
+                    url="https://t.me/rubin_shoupp"
                 )
             ],
             [
                 InlineKeyboardButton(
                     text="ГОЛОВНІ УБОРИ ↗️",
-                    url="https://t.me/headwear32"  # або callback_data
+                    url="https://t.me/rubin_shoupp"
                 )
             ]
         ]
