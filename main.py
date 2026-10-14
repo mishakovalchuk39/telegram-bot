@@ -7,7 +7,7 @@ from aiogram.filters import CommandStart
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 # Встав сюди свій токен бота від BotFather
-TOKEN = "8909701110:AAHrmwTlzHXs9zfXMD3KbBfVO1_yuaurX94"
+TOKEN = "8909701110:AAFPzpyYm1X3PIHk1a5NEv992Kcm_9qd5G0"
 
 logging.basicConfig(level=logging.INFO)
 
