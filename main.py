@@ -5,24 +5,22 @@ from aiogram import Bot, Dispatcher, F, Router
 from aiogram.filters import CommandStart
 from aiogram.types import CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup, Message
 
-# 1. ТВОЙ ТОКЕН
-TOKEN = "8909701110:AAHrmwTlzHXs9zfXMD3KbBf01_yuaurX94"
+TOKEN = "8909701110:AAHrmwTlZHxS9zfXMD3KbBf01_yuaurX94"
 
 router = Router()
 
-# КНОПКИ КАТАЛОГУ (ВІДРАЗУ ВЕДУТЬ НА КАНАЛИ)
 catalog_keyboard = InlineKeyboardMarkup(
     inline_keyboard=[
         [
             InlineKeyboardButton(
                 text="ВЕРХНІЙ ОДЯГ",
-                url="https://t.me/outerwear32"  # 👈 Сюди посилання на канал
+                url="https://t.me/outerwear32"
             )
         ],
         [
             InlineKeyboardButton(
                 text="ГОЛОВНІ УБОРИ",
-                url="https://t.me/rubin_shoupp"  # 👈 Сюди посилання на канал
+                url="https://t.me/rubin_shoupp"
             )
         ]
     ]
@@ -30,30 +28,25 @@ catalog_keyboard = InlineKeyboardMarkup(
 
 
 @router.message(CommandStart())
-async def cmd_start(message: Message):
-    await message.answer(
-        "Привіт! Обери категорію нижче:",
-        reply_markup=catalog_keyboard
-    )
+async def start_cmd(message: Message):
+    await message.answer("Привіт! Обери каталог:", reply_markup=catalog_keyboard)
 
 
-# Веб-сервер для того, щоб Render бачив відкритий порт 10000
+# Веб-сервер для Render (порт 10000)
 async def handle(request):
-    return web.Response(text="Bot is alive!")
+    return web.Response(text="Bot is running!")
 
 
-async def web_server():
+async def main():
+    logging.basicConfig(level=logging.INFO)
+
+    # Запуск веб-сервера aiohttp
     app = web.Application()
     app.router.add_get("/", handle)
     runner = web.AppRunner(app)
     await runner.setup()
     site = web.TCPSite(runner, "0.0.0.0", 10000)
     await site.start()
-
-
-async def main():
-    # Запускаємо веб-сервер для Render перед запуском бота
-    await web_server()
 
     bot = Bot(token=TOKEN)
     dp = Dispatcher()
@@ -64,5 +57,4 @@ async def main():
 
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.INFO)
     asyncio.run(main())
