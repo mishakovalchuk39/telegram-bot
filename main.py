@@ -6,8 +6,8 @@ from aiogram import Bot, Dispatcher, types
 from aiogram.filters import CommandStart
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
-# Вставь сюда свой токен от BotFather
-TOKEN = "8909701110:AAHrmwTlzHXs9zfXMD3KbBfVO1_yuaurX94"
+# Встав сюди свій токен бота від BotFather
+TOKEN = "ВСТАВ_СВІЙ_ТОКЕН_СЮДИ"
 
 logging.basicConfig(level=logging.INFO)
 
@@ -22,7 +22,6 @@ async def handle(request):
 
 async def start_web_server():
     app = web.Application()
-    # add_get автоматически обрабатывает и GET, и HEAD запросы Render
     app.router.add_get("/", handle)
     runner = web.AppRunner(app)
     await runner.setup()
@@ -32,7 +31,7 @@ async def start_web_server():
     logging.info(f"Web server started on port {port}")
 
 
-# --- КНОПКИ И ОБРАБОТЧИК СТАРТА ---
+# --- ГОЛОВНЕ МЕНЮ ТА КОМАНДА /start ---
 @dp.message(CommandStart())
 async def cmd_start(message: types.Message):
     keyboard = InlineKeyboardMarkup(
@@ -46,7 +45,7 @@ async def cmd_start(message: types.Message):
             [
                 InlineKeyboardButton(
                     text="👨‍💻 ЗВ'ЯЗОК З МЕНЕДЖЕРОМ",
-                    url="https://t.me/Mikhail34211"  # Вкажи юзернейм менеджера
+                    url="https://t.me/Mikhail34211"
                 )
             ]
         ]
@@ -61,7 +60,7 @@ async def cmd_start(message: types.Message):
     await message.answer(text, reply_markup=keyboard)
 
 
-# Обработчик кнопки "ВІДКРИТИ КАТАЛОГ"
+# --- ОБРОБНИК КНОПКИ "ВІДКРИТИ КАТАЛОГ" ---
 @dp.callback_query(lambda c: c.data == "open_catalog")
 async def process_catalog(callback_query: types.CallbackQuery):
     catalog_keyboard = InlineKeyboardMarkup(
@@ -74,8 +73,20 @@ async def process_catalog(callback_query: types.CallbackQuery):
             ],
             [
                 InlineKeyboardButton(
+                    text="ВЗУТТЯ ↗️",
+                    url="https://t.me/shoes323"
+                )
+            ],
+            [
+                InlineKeyboardButton(
                     text="ГОЛОВНІ УБОРИ ↗️",
                     url="https://t.me/headwear32"
+                )
+            ],
+            [
+                InlineKeyboardButton(
+                    text="СУМКИ ТА АКСЕСУАРИ ↗️",
+                    url="https://t.me/drop_accessories1"
                 )
             ]
         ]
@@ -85,9 +96,11 @@ async def process_catalog(callback_query: types.CallbackQuery):
     await callback_query.answer()
 
 
-# --- ГЛАВНАЯ ФУНКЦИЯ ЗАПУСКА ---
+# --- ГОЛОВНА ФУНКЦІЯ ЗАПУСКУ ---
 async def main():
     await start_web_server()
+    # Прибираємо старий вебхук, щоб поллінг запрацював на 100%
+    await bot.delete_webhook(drop_pending_updates=True)
     logging.info("Бот успішно запущено!")
     await dp.start_polling(bot)
 
